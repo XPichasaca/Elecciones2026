@@ -1,0 +1,35 @@
+
+# Dependencias
+node_modules/
+
+# Archivos generados
+dist/
+dist-ssr/
+
+# Variables y secretos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Configuración de editores
+.vscode/
+.idea/
+*.suo
+*.sw?
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos locales
+*.local

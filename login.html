@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso | Elecciones26</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #edf3fa, #ffffff);
+            color: #24364b;
+        }
+
+        .wiphala {
+            height: 5px;
+            background: linear-gradient(
+                90deg,
+                #e53935,
+                #f59e0b,
+                #facc15,
+                #16a34a,
+                #2563eb,
+                #7c3aed
+            );
+        }
+
+        .login {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border: 1px solid #dce5f0;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px #173d7018;
+        }
+
+        .contenido {
+            padding: 35px;
+        }
+
+        .marca {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .marca img {
+            width: 95px;
+            height: 95px;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            color: #173d70;
+            margin: 0;
+            font-size: 27px;
+        }
+
+        .marca p {
+            color: #718096;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #173d70;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 7px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dce5f0;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #b8d1ef;
+            border-color: #173d70;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 23px;
+            background: #173d70;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #24558c;
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        #mensaje {
+            display: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 17px;
+        }
+
+        .error {
+            display: block !important;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .exito {
+            display: block !important;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #718096;
+            font-size: 11px;
+            border-top: 1px solid #edf1f6;
+        }
+
+        @media (max-width: 480px) {
+            .contenido {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login">
+
+        <div class="wiphala"></div>
+
+        <div class="contenido">
+
+            <div class="marca">
+
+                <img src="/img/PACHAKUTIK.png" alt="Logo institucional">
+
+                <h1>ELECCIONES26</h1>
+
+                <p>SISTEMA DE CONTEO ELECTORAL</p>
+                <p>PROVINCIA DEL CAÑAR · 2026</p>
+
+            </div>
+
+            <h2>Iniciar sesión</h2>
+
+            <form id="formLogin">
+
+                <label for="correo">Usuario</label>
+
+                <input
+                    type="email"
+                    id="correo"
+                    placeholder="Ingrese su usuario"
+                    autocomplete="username"
+                    required
+                >
+
+                <label for="contrasena">Contraseña</label>
+
+                <input
+                    type="password"
+                    id="contrasena"
+                    placeholder="Ingrese su contraseña"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit" id="btnIngresar">
+                    INGRESAR
+                </button>
+
+            </form>
+
+            <div id="mensaje" role="alert"></div>
+
+        </div>
+
+        <footer>
+            Acceso exclusivo para usuarios autorizados
+            <br>
+            Elecciones26 © 2026
+        </footer>
+
+        <div class="wiphala"></div>
+
+    </main>
+
+    <script type="module" src="/src/js/login.js"></script>
+
+</body>
+</html>

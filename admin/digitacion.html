@@ -1,0 +1,953 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173d70">
+    <title>Digitación Electoral | Elecciones 2026</title>
+    <link rel="stylesheet" href="../src/style.css">
+
+    <style>
+        :root {
+            --azul: #173d70;
+            --azul2: #24558c;
+            --azul-claro: #edf3fa;
+            --dorado: #d5ad42;
+            --fondo: #edf3fa;
+            --texto: #24364b;
+            --borde: #dce5f0;
+            --blanco: #ffffff;
+            --gris: #718096;
+            --alto-cabecera: 86px;
+            --alto-pie: 48px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding-top: calc(var(--alto-cabecera) + 7px);
+            padding-bottom: var(--alto-pie);
+            background: linear-gradient(135deg, #edf3fa, #ffffff);
+            color: var(--texto);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* FRANJA SUPERIOR */
+        .franja {
+            height: 7px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1002;
+            background: linear-gradient(to right,
+                #e53935 0 16.66%,
+                #f59e0b 16.66% 33.32%,
+                #facc15 33.32% 49.98%,
+                #16a34a 49.98% 66.64%,
+                #2563eb 66.64% 83.3%,
+                #7c3aed 83.3% 100%);
+        }
+
+        /* CABECERA INSTITUCIONAL */
+        .topbar {
+            position: fixed;
+            top: 7px;
+            left: 0;
+            width: 100%;
+            min-height: var(--alto-cabecera);
+            padding: 12px 20px;
+            background: linear-gradient(110deg,
+                #f6f6f6 0%,
+                #fbfcfd 48%,
+                #f2f3f4 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            z-index: 1001;
+            border-bottom: 3px solid var(--dorado);
+            box-shadow: 0 4px 14px #000a1535;
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .marca img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background: white;
+            border-radius: 10px;
+            padding: 4px;
+            box-shadow: 0 2px 8px #00000025;
+        }
+
+        .marca h1 {
+            font-size: 21px;
+            margin: 0 0 5px;
+            letter-spacing: .8px;
+            font-weight: 800;
+        }
+
+        .marca p {
+            font-size: 13px;
+            margin: 0;
+            color: #002d52;
+        }
+
+        .btn-volver-panel {
+            color: rgb(5, 40, 214);
+            text-decoration: none;
+            background: #c2d4e9c6;
+            border: 1px solid #ffffff70;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: .2s;
+        }
+
+        .btn-volver-panel:hover {
+            background: #ffffff30;
+            border-color: var(--dorado);
+        }
+
+        /* ÁREA CENTRAL AMPLIADA */
+        .contenedor {
+            width: 98%;
+            max-width: 1800px;
+            margin: 28px auto 35px;
+            min-height: calc(100vh - 190px);
+        }
+
+        .encabezado {
+            margin-bottom: 22px;
+        }
+
+        .encabezado h2 {
+            color: var(--azul);
+            font-size: 28px;
+            margin: 0 0 7px;
+            font-weight: 800;
+        }
+
+        .encabezado p {
+            color: var(--gris);
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .barra-superior {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .ruta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+            color: var(--gris);
+            font-size: 12px;
+        }
+
+        .ruta span.activo {
+            color: var(--azul);
+            font-weight: bold;
+        }
+
+        .btn-atras {
+            border: 1px solid var(--borde);
+            background: white;
+            color: var(--azul);
+            border-radius: 8px;
+            padding: 11px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btn-atras:hover {
+            background: var(--azul-claro);
+            border-color: var(--azul2);
+        }
+
+        /* PANELES */
+        .panel {
+            background: white;
+            border: 1px solid var(--borde);
+            border-radius: 14px;
+            padding: 26px;
+            box-shadow: 0 3px 14px #173d7010;
+        }
+
+        .panel-titulo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .panel-titulo h3 {
+            color: var(--azul);
+            font-size: 19px;
+            margin: 0;
+        }
+
+        .panel-titulo p {
+            color: var(--gris);
+            font-size: 13px;
+            margin: 5px 0 0;
+        }
+
+        .numero {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #173d70, #24558c);
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* CAMPOS */
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .campo label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #34465c;
+        }
+
+        .campo select,
+        .campo input,
+        .campo textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd7e5;
+            border-radius: 8px;
+            background: white;
+            color: var(--texto);
+            font-size: 14px;
+            outline: none;
+            transition: .2s;
+        }
+
+        .campo select:focus,
+        .campo input:focus,
+        .campo textarea:focus {
+            border-color: var(--azul2);
+            box-shadow: 0 0 0 3px #24558c18;
+        }
+
+        .campo textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        /* TARJETAS DE DIGNIDADES */
+        .dignidades {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .tarjeta-dignidad {
+            min-height: 165px;
+            padding: 24px 16px;
+            border: 2px solid var(--borde);
+            border-radius: 14px;
+            background: white;
+            color: var(--azul);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            text-align: center;
+            transition: .2s;
+        }
+
+        .tarjeta-dignidad:hover {
+            border-color: var(--dorado);
+            background: #f7faff;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 18px #173d7015;
+        }
+
+        .icono-dignidad {
+            font-size: 42px;
+        }
+
+        .nombre-dignidad {
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .detalle-dignidad {
+            font-size: 12px;
+            color: var(--gris);
+        }
+
+        /* TERRITORIOS */
+        .tarjetas-territorio {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .tarjeta-territorio {
+            border: 1px solid var(--borde);
+            border-radius: 11px;
+            background: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            cursor: pointer;
+            text-align: left;
+            color: var(--azul);
+            transition: .2s;
+            min-height: 85px;
+        }
+
+        .tarjeta-territorio:hover {
+            border-color: var(--dorado);
+            background: #f7faff;
+            transform: translateY(-2px);
+        }
+
+        .territorio-icono {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: var(--azul-claro);
+            font-size: 23px;
+            flex-shrink: 0;
+        }
+
+        .territorio-nombre {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .territorio-detalle {
+            font-size: 11px;
+            color: var(--gris);
+            margin-top: 5px;
+        }
+
+        /* JUNTAS */
+        .tarjetas-juntas {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .tarjeta-junta {
+            padding: 20px;
+            border: 1px solid var(--borde);
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            text-align: left;
+            color: var(--azul);
+            transition: .2s;
+        }
+
+        .tarjeta-junta:hover {
+            border-color: var(--dorado);
+            background: #f7faff;
+            transform: translateY(-2px);
+        }
+
+        .tarjeta-junta.guardada {
+            border-color: #75a9d8;
+            background: #eff6fd;
+        }
+
+        .junta-numero {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .junta-genero {
+            font-size: 12px;
+            color: var(--gris);
+            margin-top: 5px;
+        }
+
+        .estado-junta {
+            font-size: 10px;
+            font-weight: bold;
+            padding: 6px 9px;
+            border-radius: 20px;
+            background: #edf0f4;
+            color: #596779;
+            white-space: nowrap;
+        }
+
+        .estado-junta.guardada {
+            background: #e1edf9;
+            color: #174b7d;
+        }
+
+        /* RESUMEN TERRITORIAL */
+        .resumen-territorial {
+            background: var(--azul-claro);
+            border-left: 4px solid var(--azul2);
+            border-radius: 7px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            color: #40536a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ENCABEZADO DE JUNTA */
+        .encabezado-junta {
+            background: linear-gradient(110deg, #102b4d, #173d70 65%, #24558c);
+            color: white;
+            border-radius: 12px;
+            padding: 23px;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--dorado);
+            box-shadow: 0 4px 12px #173d7020;
+        }
+
+        .encabezado-junta small {
+            color: #dce8f5;
+            font-size: 12px;
+        }
+
+        .encabezado-junta h3 {
+            margin: 6px 0;
+            font-size: 25px;
+        }
+
+        .encabezado-junta p {
+            margin: 0;
+            font-size: 12px;
+            color: #dce8f5;
+        }
+
+        /* CANDIDATURAS */
+        .candidatos {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .candidato {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid var(--borde);
+            border-radius: 9px;
+            background: #fbfdff;
+        }
+
+        .candidato-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .logo-lista {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            padding: 3px;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        .lista-nombre {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--azul);
+        }
+
+        .lista-candidato {
+            display: block;
+            font-size: 11px;
+            color: var(--gris);
+            margin-top: 4px;
+        }
+
+        .candidato input {
+            width: 110px;
+            padding: 12px;
+            border: 1px solid #cbd7e5;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            color: var(--azul);
+        }
+
+        .candidato input:focus {
+            outline: none;
+            border-color: var(--azul2);
+            box-shadow: 0 0 0 3px #24558c18;
+        }
+
+        .sin-candidaturas {
+            padding: 24px;
+            background: #f7f9fc;
+            border: 1px dashed #cbd7e5;
+            border-radius: 9px;
+            text-align: center;
+            color: var(--gris);
+            font-size: 14px;
+        }
+
+        /* RESUMEN DE VOTOS */
+        .resumen-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .resumen-grid input {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .total-candidaturas {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--azul-claro);
+            border: 1px solid var(--borde);
+            border-radius: 9px;
+            padding: 17px;
+            margin-top: 17px;
+            color: var(--azul);
+            font-weight: bold;
+        }
+
+        .total-candidaturas strong {
+            font-size: 25px;
+        }
+
+        /* BOTONES */
+        .acciones {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 13px 21px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .btn-guardar {
+            background: var(--azul);
+            color: white;
+        }
+
+        .btn-guardar:hover {
+            background: var(--azul2);
+        }
+
+        .btn-limpiar {
+            background: #edf0f4;
+            color: #45566b;
+        }
+
+        .btn-limpiar:hover {
+            background: #e0e7f0;
+        }
+
+        /* MENSAJES */
+        #mensaje {
+            display: none;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        #mensaje.error {
+            display: block;
+            color: #991b1b;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+        }
+
+        #mensaje.exito {
+            display: block;
+            color: #166534;
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* PROGRESO */
+        .progreso {
+            display: flex;
+            gap: 6px;
+            margin: 0 0 20px;
+        }
+
+        .progreso span {
+            height: 5px;
+            flex: 1;
+            border-radius: 10px;
+            background: #dce5f0;
+        }
+
+        .progreso span.activo {
+            background: var(--azul2);
+        }
+
+        /* PIE FIJO */
+        .pie {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            min-height: var(--alto-pie);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 12px;
+            background: #102b4d;
+            color: #dce8f5;
+            font-size: 12px;
+            z-index: 1000;
+            border-top: 2px solid var(--dorado);
+            box-shadow: 0 -2px 10px #173d7015;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        /* TABLETS */
+        @media (max-width: 800px) {
+            .dignidades,
+            .tarjetas-territorio,
+            .tarjetas-juntas {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .contenedor {
+                width: 97%;
+            }
+        }
+
+        /* CELULARES */
+        @media (max-width: 550px) {
+            :root {
+                --alto-cabecera: 76px;
+            }
+
+            .topbar {
+                padding: 9px 12px;
+                gap: 8px;
+            }
+
+            .marca {
+                gap: 9px;
+            }
+
+            .marca img {
+                width: 46px;
+                height: 46px;
+            }
+
+            .marca h1 {
+                font-size: 15px;
+            }
+
+            .marca p {
+                font-size: 10px;
+            }
+
+            .btn-volver-panel {
+                padding: 9px 10px;
+                font-size: 10px;
+            }
+
+            .contenedor {
+                width: 96%;
+                margin-top: 20px;
+            }
+
+            .dignidades,
+            .tarjetas-territorio,
+            .tarjetas-juntas,
+            .resumen-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 17px;
+            }
+
+            .encabezado h2 {
+                font-size: 23px;
+            }
+
+            .candidato {
+                gap: 8px;
+                padding: 10px;
+            }
+
+            .candidato input {
+                width: 85px;
+            }
+
+            .acciones {
+                flex-direction: column;
+            }
+
+            .acciones .btn {
+                width: 100%;
+            }
+
+            .tarjeta-dignidad {
+                min-height: 135px;
+            }
+        }
+        .foto-candidato {
+    width: 65px;
+    height: 65px;
+    min-width: 65px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    background: #f5f5f5;
+    flex-shrink: 0;
+}
+    </style>
+</head>
+
+<body>
+    <div class="franja"></div>
+
+    <header class="topbar">
+        <div class="marca">
+            <img src="/img/PACHAKUTIK.png" alt="Logo institucional">
+            <div>
+                <h1>ELECCIONES 2026</h1>
+                <p>Sistema de conteo electoral · Cantón Cañar</p>
+            </div>
+        </div>
+
+        <a href="/admin/index.html" class="btn-volver-panel">
+            ← Panel administrativo
+        </a>
+    </header>
+
+    <main class="contenedor">
+
+        <div class="encabezado">
+            <h2>Digitación electoral</h2>
+            <p>Registro y control de resultados por junta receptora del voto.</p>
+        </div>
+    
+
+        <div id="mensaje" role="alert" aria-live="polite"></div>
+
+        <div class="barra-superior">
+            <div class="ruta" id="ruta">
+                <span class="activo">Digitación</span>
+            </div>
+            <button type="button" id="btnVolver" class="btn-atras" hidden>
+                ← Volver
+            </button>
+        </div>
+
+        <div class="progreso" id="progreso">
+            <span class="activo"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <section id="vistaDignidades" class="vista panel">
+            <div class="panel-titulo">
+                <span class="numero">01</span>
+                <div>
+                    <h3>Seleccione la dignidad</h3>
+                    <p>Elija la elección que desea registrar.</p>
+                </div>
+            </div>
+
+            <div class="campo" style="margin-bottom:23px">
+                <label for="proceso">Proceso electoral *</label>
+                <select id="proceso" required>
+                    <option value="">Cargando procesos...</option>
+                </select>
+            </div>
+
+            <div id="tarjetasDignidades" class="dignidades">
+                <div class="sin-candidaturas">Cargando dignidades...</div>
+            </div>
+
+            <select id="dignidad" hidden></select>
+            <select id="circunscripcion" hidden></select>
+        </section>
+
+        <section id="vistaParroquias" class="vista panel" hidden>
+            <div class="panel-titulo">
+                <span class="numero">02</span>
+                <div>
+                    <h3>Seleccione la parroquia</h3>
+                    <p id="subtituloParroquias">Parroquias habilitadas para esta dignidad.</p>
+                </div>
+            </div>
+
+            <div class="resumen-territorial" id="resumenParroquias"></div>
+            <div id="tarjetasParroquias" class="tarjetas-territorio"></div>
+        </section>
+
+        <section id="vistaRecintos" class="vista panel" hidden>
+            <div class="panel-titulo">
+                <span class="numero">03</span>
+                <div>
+                    <h3>Seleccione el recinto</h3>
+                    <p>Recintos electorales del territorio seleccionado.</p>
+                </div>
+            </div>
+
+            <div class="resumen-territorial" id="resumenRecintos"></div>
+            <div id="tarjetasRecintos" class="tarjetas-territorio"></div>
+        </section>
+
+        <section id="vistaJuntas" class="vista panel" hidden>
+            <div class="panel-titulo">
+                <span class="numero">04</span>
+                <div>
+                    <h3>Seleccione la junta</h3>
+                    <p>Abra una junta para ingresar sus resultados.</p>
+                </div>
+            </div>
+
+            <div class="resumen-territorial" id="resumenJuntas"></div>
+            <div id="tarjetasJuntas" class="tarjetas-juntas"></div>
+        </section>
+
+        <section id="vistaDigitacion" class="vista" hidden>
+
+            <div class="encabezado-junta">
+                <small>DIGITACIÓN DE RESULTADOS</small>
+                <h3 id="tituloJunta">JUNTA</h3>
+                <p id="detalleJunta"></p>
+            </div>
+
+            <div class="panel">
+                <div class="panel-titulo">
+                    <span class="numero">05</span>
+                    <div>
+                        <h3>Votos por lista</h3>
+                        <p>Ingrese los votos correspondientes a cada candidatura.</p>
+                    </div>
+                </div>
+
+                <div id="candidatos" class="candidatos">
+                    <div class="sin-candidaturas">Cargando candidaturas...</div>
+                </div>
+
+                <div class="total-candidaturas">
+                    <span>Total de votos por candidaturas</span>
+                    <strong id="totalCandidaturas">0</strong>
+                </div>
+
+                <div class="resumen-grid">
+                    <div class="campo">
+                        <label for="blancos">Votos blancos</label>
+                        <input type="number" id="blancos" min="0" step="1" value="0">
+                    </div>
+
+                    <div class="campo">
+                        <label for="nulos">Votos nulos</label>
+                        <input type="number" id="nulos" min="0" step="1" value="0">
+                    </div>
+
+                    <div class="campo">
+                        <label for="sufragantes">Total de sufragantes</label>
+                        <input type="number" id="sufragantes" min="0" step="1" placeholder="Cantidad">
+                    </div>
+                </div>
+
+                <div class="campo" style="margin-top:18px">
+                    <label for="observaciones">Observaciones</label>
+                    <textarea id="observaciones"
+                        placeholder="Ingrese novedades u observaciones de la junta..."></textarea>
+                </div>
+
+                <div class="acciones">
+                    <button type="button" id="limpiar" class="btn btn-limpiar">
+                        Limpiar datos
+                    </button>
+
+                    <button type="button" id="guardar" class="btn btn-guardar">
+                        Guardar junta y continuar →
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="pie">
+        ELECCIONES 2026 · Sistema de conteo electoral · Cantón Cañar · Acceso autorizado
+    </footer>
+
+    <script type="module" src="../src/js/digitacion.js"></script>
+</body>
+</html>

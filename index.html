@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173d70">
+    <title>Elecciones26 | Cañar</title>
+
+    <style>
+        :root {
+            --azul: #173d70;
+            --azul-hover: #24558c;
+            --fondo: #edf3fa;
+            --texto: #24364b;
+            --gris: #718096;
+            --borde: #dce5f0;
+            --alto-header: 86px;
+            --alto-footer: 62px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            color: var(--texto);
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: var(--fondo);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* FRANJA WIPHALA */
+        .wiphala {
+            height: 5px;
+            flex-shrink: 0;
+            background: linear-gradient(
+                90deg,
+                #e53935 0 16.66%,
+                #f59e0b 16.66% 33.32%,
+                #facc15 33.32% 49.98%,
+                #16a34a 49.98% 66.64%,
+                #2563eb 66.64% 83.3%,
+                #7c3aed 83.3% 100%
+            );
+        }
+
+        /* ENCABEZADO FIJO */
+        .encabezado {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #ffffff;
+            box-shadow: 0 3px 15px #173d7012;
+        }
+
+        .encabezado .wiphala {
+            width: 100%;
+        }
+
+        header {
+            min-height: var(--alto-header);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 5%;
+            background: white;
+        }
+
+        .logo {
+            width: 70px;
+            height: 60px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .marca h1 {
+            color: var(--azul);
+            font-size: 23px;
+            letter-spacing: .5px;
+        }
+
+        .marca p {
+            color: var(--gris);
+            font-size: 11px;
+            margin-top: 5px;
+            letter-spacing: 1.2px;
+        }
+
+        /* CONTENIDO */
+        main {
+            flex: 1;
+            width: 100%;
+            padding-top: calc(var(--alto-header) + 5px);
+            padding-bottom: var(--alto-footer);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .imagen {
+            flex: 1;
+            min-height: 300px;
+            position: relative;
+            overflow: hidden;
+            background: var(--azul);
+        }
+
+        .imagen img {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .contenido {
+            padding: 28px 20px 32px;
+            text-align: center;
+            background: linear-gradient(
+                180deg,
+                #ffffff,
+                var(--fondo)
+            );
+        }
+
+        .contenido h2 {
+            color: var(--azul);
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .contenido p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 23px;
+        }
+
+        .btn-ingresar {
+            display: inline-block;
+            min-width: 210px;
+            padding: 15px 40px;
+            background: var(--azul);
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 9px;
+            transition: .25s;
+            box-shadow: 0 6px 15px #173d7030;
+        }
+
+        .btn-ingresar:hover {
+            background: var(--azul-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-ingresar:focus-visible {
+            outline: 3px solid #b8d1ef;
+            outline-offset: 3px;
+        }
+
+        /* PIE DE PÁGINA FIJO */
+        .pie {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 -3px 15px #173d7010;
+        }
+
+        footer {
+            min-height: var(--alto-footer);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 8px 15px;
+            text-align: center;
+            color: var(--gris);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* TABLETAS */
+        @media (min-width: 601px) {
+            .imagen {
+                min-height: 350px;
+                max-height: 65vh;
+            }
+
+            .imagen img {
+                min-height: 350px;
+            }
+        }
+
+        /* CELULARES */
+        @media (max-width: 600px) {
+            :root {
+                --alto-header: 72px;
+                --alto-footer: 60px;
+            }
+
+            header {
+                padding: 8px 15px;
+                gap: 12px;
+            }
+
+            .logo {
+                width: 55px;
+                height: 50px;
+            }
+
+            .marca h1 {
+                font-size: 19px;
+            }
+
+            .marca p {
+                font-size: 9px;
+                letter-spacing: .7px;
+            }
+
+            .imagen {
+                min-height: 250px;
+            }
+
+            .imagen img {
+                min-height: 250px;
+            }
+
+            .contenido {
+                padding: 24px 15px;
+            }
+
+            .contenido h2 {
+                font-size: 24px;
+            }
+
+            .contenido p {
+                font-size: 13px;
+            }
+
+            .btn-ingresar {
+                width: 90%;
+                max-width: 320px;
+            }
+
+            footer {
+                font-size: 10px;
+            }
+        }
+
+        /* PANTALLAS BAJAS */
+        @media (max-height: 600px) and (min-width: 601px) {
+            .imagen {
+                min-height: 180px;
+            }
+
+            .imagen img {
+                min-height: 180px;
+            }
+
+            .contenido {
+                padding: 15px;
+            }
+
+            .contenido h2 {
+                font-size: 23px;
+            }
+
+            .contenido p {
+                margin-bottom: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+    <div class="encabezado">
+        <div class="wiphala"></div>
+
+        <header>
+            <img
+                src="/img/PACHAKUTIK.png"
+                alt="Logotipo institucional"
+                class="logo"
+            >
+
+            <div class="marca">
+                <h1>ELECCIONES26</h1>
+                <p>SISTEMA DE CONTEO ELECTORAL</p>
+            </div>
+        </header>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+
+        <div class="imagen">
+            <img
+                src="/img/MOVIMIENTO.jpg"
+                alt="Imagen institucional de Elecciones26"
+            >
+        </div>
+
+        <section class="contenido">
+            <h2>CAÑAR 2026</h2>
+
+            <p>
+                Sistema de gestión y conteo electoral
+                del cantón Cañar.
+            </p>
+
+            <a href="/login.html" class="btn-ingresar">
+                INGRESAR
+            </a>
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <div class="pie">
+        <footer>
+            <span>Acceso restringido · Usuarios autorizados</span>
+            <span>Elecciones26 © 2026</span>
+        </footer>
+        <div class="wiphala"></div>
+    </div>
+
+</body>
+</html>

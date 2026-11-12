@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados Electorales | Cañar 2026</title>
+  <link rel="stylesheet" href="../src/style.css">
+
+  <style>
+    :root {
+      --azul: #173f70;
+      --azul2: #245b91;
+      --borde: #d5e2f0;
+      --texto: #203047;
+      --gris: #64748b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #f5f8fc;
+      color: var(--texto);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .topbar {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-bottom: 3px solid var(--azul);
+      box-shadow: 0 3px 14px #173f7014;
+    }
+
+    .topbar-inner {
+      width: 98%;
+      max-width: 1800px;
+      min-height: 85px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 9px 0;
+    }
+
+    .logo {
+      width: 65px;
+      height: 65px;
+      object-fit: contain;
+    }
+
+    .marca h1 {
+      margin: 0;
+      color: var(--azul);
+      font-size: clamp(20px, 2.2vw, 29px);
+    }
+
+    .marca p {
+      margin: 4px 0 0;
+      color: var(--gris);
+      font-size: 13px;
+    }
+
+    .acciones-top {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .usuario {
+      color: var(--gris);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .btn {
+      display: inline-block;
+      border: 1px solid var(--borde);
+      background: white;
+      color: var(--azul);
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: #eaf2fb; }
+
+    .franja-wiphala {
+      height: 7px;
+      display: flex;
+      width: 100%;
+    }
+
+    .franja-wiphala i { flex: 1; }
+    .franja-wiphala i:nth-child(1) { background: #e5243b; }
+    .franja-wiphala i:nth-child(2) { background: #f28c28; }
+    .franja-wiphala i:nth-child(3) { background: #f5d928; }
+    .franja-wiphala i:nth-child(4) { background: #269b48; }
+    .franja-wiphala i:nth-child(5) { background: #2476c8; }
+    .franja-wiphala i:nth-child(6) { background: #713b91; }
+
+    main {
+      width: 98%;
+      max-width: 1800px;
+      margin: 115px auto 75px;
+      min-height: calc(100vh - 200px);
+    }
+
+    .titulo-pagina {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .titulo-pagina h2 {
+      margin: 0;
+      color: var(--azul);
+      font-size: clamp(22px, 2.5vw, 32px);
+    }
+
+    .titulo-pagina p {
+      margin: 6px 0 0;
+      color: var(--gris);
+    }
+
+    .estado-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid #b8dfc9;
+      color: #176b42;
+      background: #effaf3;
+      border-radius: 30px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .punto {
+      width: 8px;
+      height: 8px;
+      background: #20a464;
+      border-radius: 50%;
+    }
+
+    .filtros {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 12px;
+      background: white;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .campo label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--gris);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .campo select {
+      width: 100%;
+      height: 42px;
+      border: 1px solid #cbd8e7;
+      border-radius: 8px;
+      padding: 0 10px;
+      background: white;
+      color: var(--texto);
+    }
+
+    .resumen {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 13px;
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 105px;
+    }
+
+    .stat .etiqueta {
+      color: var(--gris);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .stat .valor {
+      margin-top: 8px;
+      color: var(--azul);
+      font-size: 29px;
+      font-weight: 800;
+    }
+
+    .stat small { color: var(--gris); }
+
+    .panel {
+      min-width: 0;
+      background: white;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .panel h3 {
+      color: var(--azul);
+      font-size: 17px;
+      margin: 0 0 16px;
+    }
+
+    .dos-columnas {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+      gap: 16px;
+    }
+
+    .lista-resultados {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .fila-lista {
+      display: grid;
+      grid-template-columns: minmax(160px, 1.2fr) minmax(100px, 2fr) 85px 70px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .partido {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .partido img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border: 1px solid var(--borde);
+      border-radius: 7px;
+      padding: 3px;
+      background: white;
+    }
+
+    .partido strong {
+      color: #243b58;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .barra-fondo {
+      height: 13px;
+      background: #edf2f8;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .barra {
+      height: 100%;
+      border-radius: 20px;
+      transition: width .25s;
+    }
+
+    .dato-votos {
+      text-align: right;
+      color: var(--azul);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dato-pct {
+      text-align: right;
+      color: var(--gris);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .pie-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .pie {
+      width: 190px;
+      height: 190px;
+      flex: none;
+      border-radius: 50%;
+      position: relative;
+      background: #dbe5f0;
+    }
+
+    .pie::after {
+      content: "";
+      position: absolute;
+      inset: 43px;
+      background: white;
+      border-radius: 50%;
+      border: 1px solid var(--borde);
+    }
+
+    .leyenda {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 130px;
+    }
+
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #43546b;
+      font-size: 12px;
+    }
+
+    .leyenda-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex: none;
+    }
+
+    .tabla-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid #e7edf5;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f4f8fc;
+      color: var(--azul);
+      font-size: 12px;
+    }
+
+    td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .provisional { background: #fff6df; color: #91640a; }
+    .validada { background: #e8f7ee; color: #176b42; }
+    .observada { background: #fff0f0; color: #a33b3b; }
+    .pendiente { background: #eef2f7; color: #596579; }
+
+    .vacio {
+      padding: 25px;
+      text-align: center;
+      color: var(--gris);
+      border: 1px dashed var(--borde);
+      border-radius: 9px;
+    }
+
+    .nota {
+      color: var(--gris);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .error {
+      display: none;
+      padding: 12px;
+      margin-bottom: 14px;
+      border: 1px solid #efb8b8;
+      border-radius: 8px;
+      background: #fff1f1;
+      color: #a52c2c;
+    }
+
+    footer {
+      position: fixed;
+      z-index: 90;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 2px solid var(--azul);
+      text-align: center;
+      padding: 10px 12px;
+      color: var(--azul);
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    footer .franja-wiphala {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -7px;
+    }
+
+    @media(max-width: 900px) {
+      .filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .resumen { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dos-columnas { grid-template-columns: 1fr; }
+    }
+
+    @media(max-width: 600px) {
+      .topbar-inner { min-height: 72px; gap: 9px; }
+      .logo { width: 48px; height: 48px; }
+      .marca p { font-size: 10px; }
+      .usuario { display: none; }
+      .acciones-top .btn { padding: 8px; font-size: 11px; }
+      main { margin-top: 100px; }
+      .filtros { grid-template-columns: 1fr 1fr; padding: 10px; }
+      .resumen { gap: 8px; }
+      .stat { padding: 12px; min-height: 90px; }
+      .stat .valor { font-size: 23px; }
+      .panel { padding: 13px; }
+      .fila-lista {
+        grid-template-columns: minmax(100px, 1fr) minmax(60px, 1fr) 60px 50px;
+        gap: 5px;
+      }
+      .partido img { width: 29px; height: 29px; }
+      .partido strong, .dato-votos, .dato-pct { font-size: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <img class="logo" src="/img/PACHAKUTIK.png" alt="Logo institucional">
+
+    <div class="marca">
+      <h1>ELECCIONES 2026</h1>
+      <p>Sistema de conteo electoral · Cantón Cañar</p>
+    </div>
+
+    <div class="acciones-top">
+      <span id="usuarioActivo" class="usuario"></span>
+      <a class="btn" href="/admin/index.html">← Volver al panel</a>
+    </div>
+  </div>
+
+  <div class="franja-wiphala">
+    <i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+</header>
+
+<main>
+  <section class="titulo-pagina">
+    <div>
+      <h2>RESULTADOS ELECTORALES</h2>
+      <p>Consolidado estadístico y seguimiento de escrutinios</p>
+    </div>
+
+    <span class="estado-live">
+      <i class="punto"></i>
+      Actualización automática
+    </span>
+  </section>
+
+  <div id="mensajeError" class="error"></div>
+
+  <section class="filtros">
+    <div class="campo">
+      <label for="proceso">PROCESO ELECTORAL</label>
+      <select id="proceso">
+        <option value="">Cargando...</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="dignidad">DIGNIDAD</label>
+      <select id="dignidad">
+        <option value="">Todas las dignidades</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="parroquia">PARROQUIA</label>
+      <select id="parroquia">
+        <option value="">Todas las parroquias</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="estado">ESTADO DEL RESULTADO</label>
+      <select id="estado">
+        <option value="">Todos los estados</option>
+        <option value="PENDIENTE">Pendiente</option>
+        <option value="DIGITADA">Digitada</option>
+        <option value="EN_REVISION">En revisión</option>
+        <option value="VALIDADA">Validada</option>
+        <option value="OBSERVADA">Observada</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="resumen">
+    <article class="stat">
+      <div class="etiqueta">REGISTROS DE RESULTADOS</div>
+      <div class="valor" id="totalJuntas">—</div>
+      <small>Registros según los filtros</small>
+    </article>
+
+    <article class="stat">
+      <div class="etiqueta">RESULTADOS VALIDADOS</div>
+      <div class="valor" id="juntasValidadas">—</div>
+      <small>Registros revisados</small>
+    </article>
+
+    <article class="stat">
+      <div class="etiqueta">VOTOS CONTABILIZADOS</div>
+      <div class="valor" id="votosContabilizados">—</div>
+      <small>Listas + blancos + nulos</small>
+    </article>
+
+    <article class="stat">
+      <div class="etiqueta">RESULTADOS SIN VALIDAR</div>
+      <div class="valor" id="juntasPendientes">—</div>
+      <small>Registros que no están validados</small>
+    </article>
+  </section>
+
+  <section class="dos-columnas">
+    <article class="panel">
+      <h3>Votación por organización política</h3>
+      <div id="barrasListas" class="lista-resultados">
+        <div class="vacio">Cargando resultados...</div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <h3>Distribución de votos</h3>
+
+      <div class="pie-wrap">
+        <div id="graficoCircular" class="pie"></div>
+        <div id="leyendaCircular" class="leyenda"></div>
+      </div>
+
+      <p class="nota">
+        El gráfico distingue votos de listas, blancos y nulos.
+        Los resultados no validados son provisionales.
+      </p>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h3>Consolidado por organización política</h3>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Lista</th>
+            <th>Organización política</th>
+            <th class="num">Votos</th>
+            <th class="num">Porcentaje</th>
+          </tr>
+        </thead>
+        <tbody id="tablaOrganizaciones">
+          <tr><td colspan="4">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3>Resultados por junta</h3>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Parroquia</th>
+            <th>Recinto</th>
+            <th>Junta</th>
+            <th>Dignidad</th>
+            <th class="num">Votos listas</th>
+            <th class="num">Blancos</th>
+            <th class="num">Nulos</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tablaJuntas">
+          <tr><td colspan="8">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="nota">
+    Información consultada desde Supabase. La condición VALIDADA
+    identifica resultados revisados; los demás estados requieren
+    seguimiento según el proceso electoral.
+  </p>
+</main>
+
+<footer>
+  <div class="franja-wiphala">
+    <i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+  ELECCIONES 2026 · SISTEMA DE CONTEO ELECTORAL · CANTÓN CAÑAR · ACCESO AUTORIZADO
+</footer>
+
+<script type="module" src="../src/js/resultados.js"></script>
+
+</body>
+</html>

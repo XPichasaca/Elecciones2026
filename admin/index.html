@@ -1,0 +1,632 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#173d70">
+    <title>Dashboard | Elecciones26</title>
+
+    <style>
+        :root {
+            --azul: #173d70;
+            --azul-hover: #24558c;
+            --fondo: #edf3fa;
+            --texto: #24364b;
+            --gris: #718096;
+            --borde: #dce5f0;
+            --header: 91px;
+            --footer: 57px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: Arial, sans-serif;
+            color: var(--texto);
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: var(--fondo);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* FRANJA WIPHALA */
+
+        .franja {
+            height: 5px;
+            flex-shrink: 0;
+            background: linear-gradient(
+                90deg,
+                #e53935 0 16.66%,
+                #f59e0b 16.66% 33.32%,
+                #facc15 33.32% 49.98%,
+                #16a34a 49.98% 66.64%,
+                #2563eb 66.64% 83.3%,
+                #7c3aed 83.3% 100%
+            );
+        }
+
+        /* ENCABEZADO FIJO */
+
+        .encabezado {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: white;
+            box-shadow: 0 3px 15px #173d7012;
+        }
+
+        header {
+            min-height: var(--header);
+            padding: 10px 4%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+        }
+
+        .marca img {
+            width: 65px;
+            height: 58px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .marca h1 {
+            color: var(--azul);
+            font-size: 22px;
+            letter-spacing: .5px;
+        }
+
+        .marca p {
+            color: var(--gris);
+            font-size: 10px;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* USUARIO */
+
+        .usuario {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .datos-usuario {
+            text-align: right;
+        }
+
+        .datos-usuario strong {
+            display: block;
+            color: var(--azul);
+            font-size: 13px;
+        }
+
+        .datos-usuario span {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            color: var(--azul-hover);
+            letter-spacing: .5px;
+        }
+
+        .btn-salir {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 11px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+        .btn-salir:hover {
+            background: #b91c1c;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: calc(var(--header) + 30px) 30px calc(var(--footer) + 25px);
+        }
+
+        .bienvenida {
+            margin-bottom: 30px;
+        }
+
+        .bienvenida h2 {
+            color: var(--azul);
+            font-size: 27px;
+            margin-bottom: 9px;
+        }
+
+        .bienvenida p {
+            color: var(--gris);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .seccion-titulo {
+            color: var(--azul);
+            font-size: 14px;
+            letter-spacing: .7px;
+            margin-bottom: 17px;
+        }
+
+        /* TARJETAS */
+
+        .modulos {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .modulo {
+            width: 100%;
+            background: white;
+            border: 1px solid var(--borde);
+            border-radius: 13px;
+            padding: 24px;
+            min-height: 180px;
+            cursor: pointer;
+            text-align: left;
+            transition: .2s;
+            box-shadow: 0 4px 12px #173d7008;
+            color: var(--texto);
+        }
+
+        .modulo:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px #173d7018;
+            border-color: #93b4dc;
+        }
+
+        .modulo:focus-visible {
+            outline: 3px solid #b8d1ef;
+            outline-offset: 3px;
+        }
+
+        .modulo .icono {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #edf3fa;
+            color: var(--azul);
+            border-radius: 11px;
+            font-size: 24px;
+            margin-bottom: 17px;
+        }
+
+        .modulo h3 {
+            font-size: 16px;
+            margin-bottom: 9px;
+            color: var(--azul);
+        }
+
+        .modulo p {
+            color: var(--gris);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .modulo .entrar {
+            display: block;
+            margin-top: 15px;
+            color: var(--azul-hover);
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* AVISO */
+
+        .aviso {
+            margin-top: 28px;
+            background: white;
+            border: 1px solid var(--borde);
+            border-left: 4px solid var(--azul);
+            border-radius: 9px;
+            padding: 17px;
+            color: var(--gris);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .aviso strong {
+            color: var(--azul);
+        }
+
+        /* PIE FIJO */
+
+        .pie {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: white;
+            box-shadow: 0 -3px 15px #173d7010;
+        }
+
+        footer {
+            min-height: var(--footer);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--gris);
+            font-size: 11px;
+        }
+
+        /* MODAL */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: #10243d99;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 2000;
+        }
+
+        .modal.activo {
+            display: flex;
+        }
+
+        .modal-contenido {
+            background: white;
+            width: 100%;
+            max-width: 390px;
+            padding: 30px;
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 50px #0003;
+        }
+
+        .modal-icono {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .modal-contenido h3 {
+            color: var(--azul);
+            margin-bottom: 12px;
+            font-size: 19px;
+        }
+
+        .modal-contenido p {
+            color: var(--gris);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .modal-contenido button {
+            margin-top: 22px;
+            width: 100%;
+            padding: 13px;
+            background: var(--azul);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-contenido button:hover {
+            background: var(--azul-hover);
+        }
+
+        /* TABLETAS */
+
+        @media(max-width: 900px) {
+            .modulos {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            main {
+                padding-left: 22px;
+                padding-right: 22px;
+            }
+        }
+
+        /* CELULARES */
+
+        @media(max-width: 600px) {
+            :root {
+                --header: 112px;
+                --footer: 55px;
+            }
+
+            header {
+                min-height: var(--header);
+                padding: 9px 13px;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .marca {
+                gap: 8px;
+            }
+
+            .marca img {
+                width: 48px;
+                height: 45px;
+            }
+
+            .marca h1 {
+                font-size: 16px;
+            }
+
+            .marca p {
+                font-size: 8px;
+                letter-spacing: .5px;
+            }
+
+            .usuario {
+                gap: 9px;
+            }
+
+            .datos-usuario strong {
+                font-size: 11px;
+            }
+
+            .datos-usuario span {
+                font-size: 9px;
+            }
+
+            .btn-salir {
+                padding: 9px 10px;
+                font-size: 9px;
+            }
+
+            main {
+                padding: calc(var(--header) + 22px) 14px calc(var(--footer) + 20px);
+            }
+
+            .bienvenida {
+                margin-bottom: 23px;
+            }
+
+            .bienvenida h2 {
+                font-size: 22px;
+            }
+
+            .bienvenida p {
+                font-size: 13px;
+            }
+
+            .modulos {
+                grid-template-columns: 1fr;
+                gap: 13px;
+            }
+
+            .modulo {
+                min-height: auto;
+                padding: 19px;
+            }
+
+            .modulo .icono {
+                width: 42px;
+                height: 42px;
+                margin-bottom: 12px;
+            }
+
+            .aviso {
+                margin-top: 20px;
+                padding: 14px;
+            }
+
+            footer {
+                font-size: 10px;
+            }
+        }
+
+        /* CELULARES MUY PEQUEÑOS */
+
+        @media(max-width: 360px) {
+            .marca h1 {
+                font-size: 14px;
+            }
+
+            .marca p {
+                font-size: 7px;
+            }
+
+            .btn-salir {
+                padding: 8px;
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ENCABEZADO INSTITUCIONAL -->
+
+    <div class="encabezado">
+
+        <div class="franja"></div>
+
+        <header>
+
+            <div class="marca">
+                <img src="/img/PACHAKUTIK.png" alt="Logotipo">
+
+                <div>
+                    <h1>ELECCIONES26</h1>
+                    <p>SISTEMA DE CONTEO ELECTORAL</p>
+                </div>
+            </div>
+
+            <div class="usuario">
+
+                <div class="datos-usuario">
+                    <strong id="nombreUsuario">Verificando usuario...</strong>
+                    <span id="rolUsuario">VALIDANDO ACCESO</span>
+                </div>
+
+                <button class="btn-salir" id="btnSalir">
+                    CERRAR SESIÓN
+                </button>
+
+            </div>
+
+        </header>
+
+    </div>
+
+    <!-- CONTENIDO -->
+
+    <main>
+
+        <section class="bienvenida">
+
+            <h2>Panel de gestión electoral</h2>
+
+            <p>
+                Bienvenido al sistema de gestión y conteo electoral
+                del cantón Cañar.
+            </p>
+
+        </section>
+
+        <h3 class="seccion-titulo">
+            MÓDULOS DEL SISTEMA
+        </h3>
+
+        <section class="modulos">
+
+            <button class="modulo" data-modulo="digitacion">
+                <div class="icono">⌨️</div>
+                <h3>Digitación</h3>
+                <p>
+                    Registro de información de actas y resultados
+                    electorales.
+                </p>
+                <span class="entrar">INGRESAR →</span>
+            </button>
+
+            <button class="modulo" data-modulo="resultados">
+                <div class="icono">📊</div>
+                <h3>Resultados electorales</h3>
+                <p>
+                    Consulta de votos, porcentajes y resultados
+                    por dignidad y organización.
+                </p>
+                <span class="entrar">INGRESAR →</span>
+            </button>
+
+            <button class="modulo" data-modulo="actas">
+                <div class="icono">📋</div>
+                <h3>Control de actas</h3>
+                <p>
+                    Revisión, validación y seguimiento de las
+                    actas registradas.
+                </p>
+                <span class="entrar">INGRESAR →</span>
+            </button>
+
+            <button class="modulo" data-modulo="juntas">
+                <div class="icono">🏛️</div>
+                <h3>Juntas receptoras</h3>
+                <p>
+                    Consulta de parroquias, recintos y juntas
+                    electorales.
+                </p>
+                <span class="entrar">INGRESAR →</span>
+            </button>
+
+            <button class="modulo" data-modulo="usuarios">
+                <div class="icono">👥</div>
+                <h3>Usuarios</h3>
+                <p>
+                    Administración de usuarios, perfiles
+                    y permisos del sistema.
+                </p>
+                <span class="entrar">INGRESAR →</span>
+            </button>
+
+        </section>
+
+        <div class="aviso">
+            <strong>ELECCIONES26 · CAÑAR 2026</strong><br>
+            Plataforma de acceso restringido para usuarios autorizados.
+            Las operaciones disponibles dependen de los permisos asignados.
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+
+    <div class="pie">
+
+        <footer>
+            Sistema de Conteo Electoral · Cantón Cañar · 2026
+        </footer>
+
+        <div class="franja"></div>
+
+    </div>
+
+    <!-- ALERTA DE PERMISOS -->
+
+    <div class="modal" id="modalPermiso">
+
+        <div class="modal-contenido">
+
+            <div class="modal-icono">🔒</div>
+
+            <h3>Acceso restringido</h3>
+
+            <p>
+                No tiene permisos para acceder a este módulo.
+                Comuníquese con el administrador del sistema
+                si necesita autorización.
+            </p>
+
+            <button id="cerrarModal">
+                ENTENDIDO
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- SE CONSERVA EL ARCHIVO JAVASCRIPT ORIGINAL -->
+
+    <script type="module" src="/admin/js/dashboard.js"></script>
+
+</body>
+</html>

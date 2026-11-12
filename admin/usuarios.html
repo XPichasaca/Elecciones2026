@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de usuarios | Elecciones 2026</title>
+
+  <style>
+    :root {
+      --azul: #173B70;
+      --azul-2: #24569A;
+      --azul-claro: #EAF1FA;
+      --texto: #26364A;
+      --gris: #64748B;
+      --fondo: #F5F7FA;
+      --borde: #DCE4EF;
+      --blanco: #FFFFFF;
+      --rojo: #E53935;
+      --naranja: #F28C28;
+      --amarillo: #F4D03F;
+      --verde: #36A852;
+      --celeste: #2196D2;
+      --violeta: #6545A5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    .wiphala {
+      height: 8px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .wiphala span:nth-child(1) { background: var(--rojo); }
+    .wiphala span:nth-child(2) { background: var(--naranja); }
+    .wiphala span:nth-child(3) { background: var(--amarillo); }
+    .wiphala span:nth-child(4) { background: var(--verde); }
+    .wiphala span:nth-child(5) { background: var(--celeste); }
+    .wiphala span:nth-child(6) { background: var(--violeta); }
+
+    header {
+      background: var(--blanco);
+      border-bottom: 1px solid var(--borde);
+      padding: 17px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .marca {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .marca img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+    }
+
+    .marca h1 {
+      color: var(--azul);
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: .4px;
+    }
+
+    .marca p {
+      color: var(--gris);
+      font-size: 12px;
+      margin-top: 4px;
+      letter-spacing: .6px;
+    }
+
+    .encabezado-derecho {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .etiqueta-admin {
+      background: var(--azul-claro);
+      color: var(--azul);
+      border: 1px solid #D4E1F2;
+      padding: 9px 15px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-salir {
+      background: #F1F5F9;
+      color: #475569;
+      border: 1px solid var(--borde);
+      padding: 10px 16px;
+      border-radius: 8px;
+    }
+
+    .btn-salir:hover {
+      background: #E2E8F0;
+    }
+
+    main {
+      width: min(1250px, 92%);
+      margin: 32px auto;
+    }
+
+    .titulo-pagina {
+      margin-bottom: 25px;
+    }
+
+    .titulo-pagina h2 {
+      color: var(--azul);
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+
+    .titulo-pagina p {
+      color: var(--gris);
+      font-size: 14px;
+    }
+
+    .estadisticas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 17px;
+      margin-bottom: 25px;
+    }
+
+    .estadistica {
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      border-radius: 13px;
+      padding: 20px;
+      box-shadow: 0 3px 12px rgba(23, 59, 112, .04);
+    }
+
+    .estadistica .numero {
+      font-size: 29px;
+      font-weight: 800;
+      color: var(--azul);
+      margin-bottom: 5px;
+    }
+
+    .estadistica .descripcion {
+      font-size: 13px;
+      color: var(--gris);
+    }
+
+    .panel {
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      border-radius: 13px;
+      padding: 25px;
+      margin-bottom: 22px;
+      box-shadow: 0 3px 12px rgba(23, 59, 112, .04);
+    }
+
+    .panel-titulo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--borde);
+    }
+
+    .panel-titulo h3 {
+      color: var(--azul);
+      font-size: 18px;
+    }
+
+    .icono {
+      width: 35px;
+      height: 35px;
+      background: var(--azul-claro);
+      color: var(--azul);
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      font-size: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .campo label {
+      font-size: 13px;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .campo input,
+    .campo select {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      outline: none;
+      background: #FFFFFF;
+      color: var(--texto);
+      font-size: 14px;
+    }
+
+    .campo input:focus,
+    .campo select:focus {
+      border-color: var(--azul-2);
+      box-shadow: 0 0 0 3px rgba(36, 86, 154, .12);
+    }
+
+    .acciones-formulario {
+      margin-top: 21px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primario {
+      background: var(--azul);
+      color: white;
+      padding: 12px 22px;
+      border-radius: 8px;
+    }
+
+    .btn-primario:hover {
+      background: var(--azul-2);
+      transform: translateY(-1px);
+    }
+
+    .mensaje {
+      margin-top: 15px;
+      font-size: 13px;
+    }
+
+    .barra-tabla {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .barra-tabla input {
+      flex: 1;
+      min-width: 220px;
+      padding: 11px 13px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .barra-tabla input:focus {
+      border-color: var(--azul-2);
+      box-shadow: 0 0 0 3px rgba(36, 86, 154, .12);
+    }
+
+    .btn-secundario {
+      background: var(--azul-claro);
+      color: var(--azul);
+      padding: 11px 16px;
+      border-radius: 8px;
+      border: 1px solid #D4E1F2;
+    }
+
+    .btn-secundario:hover {
+      background: #DCE8F7;
+    }
+
+    .tabla-contenedor {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--borde);
+      border-radius: 9px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    thead {
+      background: var(--azul);
+      color: white;
+    }
+
+    th {
+      text-align: left;
+      padding: 14px;
+      font-size: 12px;
+      letter-spacing: .3px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid #E8EDF4;
+    }
+
+    tbody tr:hover {
+      background: #F5F8FC;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--gris);
+      font-size: 12px;
+      padding: 22px 10px;
+      margin-top: 35px;
+      background: white;
+      border-top: 1px solid var(--borde);
+    }
+
+    footer strong {
+      color: var(--azul);
+    }
+
+    @media (max-width: 700px) {
+      header {
+        padding: 15px 4%;
+      }
+
+      .marca h1 {
+        font-size: 17px;
+      }
+
+      .marca p {
+        font-size: 10px;
+      }
+
+      .estadisticas {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .estadistica {
+        padding: 15px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 17px;
+      }
+
+      .titulo-pagina h2 {
+        font-size: 23px;
+      }
+
+      .etiqueta-admin {
+        display: none;
+      }
+    }
+    .etiqueta-admin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #173B70;
+  color: #FFFFFF;
+  border: 1px solid #173B70;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .2s;
+}
+
+.etiqueta-admin:hover {
+  background: #24569A;
+  transform: translateY(-1px);
+}
+  </style>
+</head>
+
+<body>
+
+  <div class="wiphala" aria-hidden="true">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </div>
+
+  <header>
+    <div class="marca">
+      <img
+        src="/img/PACHAKUTIK.png"
+        alt="Logo institucional"
+        onerror="this.style.display='none'"
+      >
+      <div>
+        <h1>ELECCIONES 2026</h1>
+        <p>SISTEMA DE CONTEO ELECTORAL · CANTÓN CAÑAR</p>
+      </div>
+    </div>
+
+    <div class="encabezado-derecho">
+        <a href="index.html" class="etiqueta-admin">
+         ← PANEL ADMINISTRATIVO
+        </a>
+      
+      <button type="button" id="btnCerrarSesion" class="btn-salir">
+        Cerrar sesión
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="titulo-pagina">
+      <h2>Gestión de usuarios</h2>
+      <p>Administración de cuentas, roles y permisos del sistema electoral.</p>
+    </section>
+
+    <section class="estadisticas">
+      <article class="estadistica">
+        <div class="numero" id="totalUsuarios">—</div>
+        <div class="descripcion">Total de usuarios registrados</div>
+      </article>
+
+      <article class="estadistica">
+        <div class="numero" id="usuariosActivos">—</div>
+        <div class="descripcion">Usuarios activos</div>
+      </article>
+
+      <article class="estadistica">
+        <div class="numero" id="totalAdministradores">—</div>
+        <div class="descripcion">Administradores</div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-titulo">
+        <div class="icono">+</div>
+        <h3>Registrar nuevo usuario</h3>
+      </div>
+
+      <form id="formUsuario">
+
+        <div class="form-grid">
+
+          <div class="campo">
+            <label for="nombres">Nombres</label>
+            <input
+              type="text"
+              id="nombres"
+              name="nombres"
+              placeholder="Ingrese los nombres"
+              required
+            >
+          </div>
+
+          <div class="campo">
+            <label for="apellidos">Apellidos</label>
+            <input
+              type="text"
+              id="apellidos"
+              name="apellidos"
+              placeholder="Ingrese los apellidos"
+              required
+            >
+          </div>
+
+          <div class="campo">
+            <label for="email">Correo electrónico</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="usuario@correo.com"
+              required
+            >
+          </div>
+
+          <div class="campo">
+            <label for="password">Contraseña inicial</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Mínimo 10 caracteres"
+              minlength="10"
+              required
+            >
+          </div>
+
+          <div class="campo">
+            <label for="rol">Rol del usuario</label>
+            <select id="rol" name="rol" required>
+              <option value="">Seleccione un rol</option>
+              <option value="ADMINISTRADOR">Administrador</option>
+              <option value="COORDINADOR">Coordinador</option>
+              <option value="DIGITADOR">Digitador</option>
+              <option value="REVISOR">Revisor</option>
+              <option value="CONSULTA">Consulta</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="acciones-formulario">
+          <button type="submit" id="btnCrear" class="btn-primario">
+            + Crear usuario
+          </button>
+        </div>
+
+        <div id="mensajeUsuarios" class="mensaje" aria-live="polite"></div>
+
+      </form>
+    </section>
+
+    <section class="panel">
+
+      <div class="panel-titulo">
+        <div class="icono">☷</div>
+        <h3>Usuarios registrados</h3>
+      </div>
+
+      <div class="barra-tabla">
+        <input
+          type="search"
+          id="buscarUsuario"
+          placeholder="Buscar por nombre, apellido, correo o rol..."
+          aria-label="Buscar usuarios"
+        >
+
+        <button type="button" id="btnActualizar" class="btn-secundario">
+          ↻ Actualizar lista
+        </button>
+      </div>
+
+      <div class="tabla-contenedor">
+        <table>
+          <thead>
+            <tr>
+              <th>N.º</th>
+              <th>Nombres y apellidos</th>
+              <th>Correo electrónico</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody id="tablaUsuarios">
+            <tr>
+              <td colspan="6" style="text-align:center; color:#64748B; padding:25px;">
+                Cargando usuarios...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wiphala" aria-hidden="true" style="margin-bottom:18px;">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+    <strong>ELECCIONES 2026 · CANTÓN CAÑAR</strong>
+    <p style="margin-top:5px;">Sistema de gestión y conteo electoral</p>
+  </footer>
+
+  <script type="module" src="../src/js/usuarios.js"></script>
+
+</body>
+</html>
