@@ -8,6 +8,9 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
+const URL_SISTEMA =
+  "https://elecciones2026-six.vercel.app/";
+
 function respuesta(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -24,7 +27,10 @@ Deno.serve(async (req) => {
   }
 
   if (req.method !== "POST") {
-    return respuesta({ success: false, message: "Método no permitido." }, 405);
+    return respuesta({
+      success: false,
+      message: "Método no permitido.",
+    }, 405);
   }
 
   try {
@@ -39,6 +45,7 @@ Deno.serve(async (req) => {
       }, 500);
     }
 
+    // Verificar sesión del administrador.
     const authorization = req.headers.get("Authorization");
 
     if (!authorization) {
@@ -48,7 +55,6 @@ Deno.serve(async (req) => {
       }, 401);
     }
 
-    // Verificar la sesión del usuario que solicita crear la cuenta.
     const authClient = createClient(url, anonKey, {
       global: {
         headers: { Authorization: authorization },
@@ -71,7 +77,7 @@ Deno.serve(async (req) => {
       }, 401);
     }
 
-    // Cliente administrativo: nunca debe utilizarse en el navegador.
+    // Cliente administrativo seguro.
     const adminClient = createClient(url, serviceKey, {
       auth: {
         persistSession: false,
@@ -79,12 +85,13 @@ Deno.serve(async (req) => {
       },
     });
 
-    // Comprobar que quien solicita la creación sea administrador activo.
-    const { data: perfil, error: perfilError } = await adminClient
-      .from("usuarios_sistema")
-      .select("id, rol, activo")
-      .eq("auth_user_id", user.id)
-      .maybeSingle();
+    // Verificar administrador activo.
+    const { data: perfil, error: perfilError } =
+      await adminClient
+        .from("usuarios_sistema")
+        .select("id, rol, activo")
+        .eq("auth_user_id", user.id)
+        .maybeSingle();
 
     if (
       perfilError ||
@@ -142,23 +149,55 @@ Deno.serve(async (req) => {
       }, 400);
     }
 
-    // Crear cuenta en Supabase Auth.
+    // Cliente público independiente para registrar al usuario.
+    const signupClient = createClient(url, anonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
+
+    // CREAR USUARIO Y ENVIAR CONFIRMACIÓN AUTOMÁTICAMENTE.
     const { data: nuevo, error: crearError } =
-      await adminClient.auth.admin.createUser({
+      await signupClient.auth.signUp({
         email,
         password,
-        email_confirm: false,
-        user_metadata: { nombres, apellidos },
+        options: {
+          emailRedirectTo: URL_SISTEMA,
+          data: {
+            nombres,
+            apellidos,
+          },
+        },
       });
 
-    if (crearError || !nuevo.user) {
+    if (crearError) {
       return respuesta({
         success: false,
-        message: crearError?.message ?? "No se pudo crear la cuenta.",
+        message: "No se pudo crear el usuario: " +
+          crearError.message,
       }, 400);
     }
 
-    // Crear perfil en usuarios_sistema.
+    if (!nuevo.user?.id) {
+      return respuesta({
+        success: false,
+        message: "No se recibió el identificador del usuario.",
+      }, 400);
+    }
+
+    // Evitar perfiles duplicados si el correo ya estaba registrado.
+    if (
+      nuevo.user.identities &&
+      nuevo.user.identities.length === 0
+    ) {
+      return respuesta({
+        success: false,
+        message: "Este correo ya está registrado.",
+      }, 409);
+    }
+
+    // Registrar información del usuario.
     const { error: insertarError } = await adminClient
       .from("usuarios_sistema")
       .insert({
@@ -170,23 +209,29 @@ Deno.serve(async (req) => {
         activo: true,
       });
 
-    // Si falla el perfil, eliminar también la cuenta creada.
+    // Si falla el perfil, eliminar la cuenta recién creada.
     if (insertarError) {
       await adminClient.auth.admin.deleteUser(nuevo.user.id);
 
       return respuesta({
         success: false,
-        message: "No se pudo crear el perfil: " + insertarError.message,
+        message: "No se pudo crear el perfil: " +
+          insertarError.message,
       }, 400);
     }
 
     return respuesta({
       success: true,
-      message: "Usuario creado correctamente.",
+      message:
+        "Usuario creado. Se envió el correo de confirmación.",
       user_id: nuevo.user.id,
+      email_sent: true,
+      email_confirmed: false,
     });
 
   } catch (error) {
+    console.error("Error en crear-usuario:", error);
+
     return respuesta({
       success: false,
       message: error instanceof Error
